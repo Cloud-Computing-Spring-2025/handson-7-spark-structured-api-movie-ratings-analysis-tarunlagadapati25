@@ -203,12 +203,13 @@ Determine which movies have an average watch time greater than 100 minutes and r
 
 A list of departments meeting the specified criteria, along with the corresponding percentages.
 
-**Example Output:**
+**Output:**
 
 | Age Group   | Binge Watchers | Percentage |
 |-------------|----------------|------------|
-| Teen        | 195            | 45%        |
-| Adult       | 145            | 38%        |
+| senior      | 20             | 58.82      |
+| Teen        | 17             | 58.62      |
+| Adult       | 19             | 51.35      |
 
 ---
 
@@ -228,12 +229,12 @@ Find users who are **at risk of churn** by identifying those with **canceled sub
 
 A count of users who **canceled their subscriptions and had low engagement**, highlighting **potential churn risks**.
 
-**Example Output:**  
+**Output:**  
 
 
 |Churn Risk Users                                  |	Total Users |
 |--------------------------------------------------|--------------|
-|Users with low watch time & canceled subscriptions|	350         |
+| 8                                                |	100         |
 
 
 
@@ -251,18 +252,20 @@ Analyze how **movie-watching trends** have changed over the years and find peak 
 - **Analyze Trends**: Identify patterns and compare year-over-year growth in movie consumption.  
 - **Find Peak Years**: Highlight the years with the highest number of movies watched.  
 
-**Expected Outcome:**  
+**Outcome:**  
 
 A summary of **movie-watching trends** over the years, indicating peak years for streaming activity.
 
-**Example Output:**  
+**Output:**  
 
 | Watched Year | Movies watched |
 |--------------|----------------|
-| 2020         | 1200           |
-| 2021         | 1500           |
-| 2022         | 2100           |
-| 2023         | 2800           |
+| 2018         | 20             |
+| 2019         | 23             |
+| 2020         | 14             |
+| 2021         | 18             |
+| 2022         | 14             |
+| 2023         | 11             |
 
 
 ---
