@@ -19,18 +19,28 @@ def load_data(spark, file_path):
         WatchedYear INT, UserLocation STRING, AgeGroup STRING, StreamingPlatform STRING, 
         WatchTime INT, IsBingeWatched BOOLEAN, SubscriptionStatus STRING
     """
+    
+    # Read the data from the CSV file
     df = spark.read.csv(file_path, header=True, schema=schema)
     return df
 
-def identify_churn_risk_users(df):
+def identify_churn_risk_users(spark, df):
     """
     Identify users with canceled subscriptions and low watch time (<100 minutes).
-
-    TODO: Implement the following steps:
-    1. Filter users where `SubscriptionStatus = 'Canceled'` AND `WatchTime < 100`.
-    2. Count the number of such users.
     """
-    pass  # Remove this line after implementation
+    # Filter users who have canceled subscriptions and watch time less than 100 minutes
+    churn_risk_df = df.filter((col("SubscriptionStatus") == "Canceled") & (col("WatchTime") < 100))
+    
+    # Count the number of churn risk users
+    churn_risk_count = churn_risk_df.count()
+
+    # Count total number of users
+    total_users_count = df.select("UserID").distinct().count()
+
+    # Return the result as a DataFrame for consistency with other functions
+    result_df = spark.createDataFrame([(total_users_count, churn_risk_count)], ["TotalUsers", "ChurnRiskUsers"])
+    
+    return result_df
 
 def write_output(result_df, output_path):
     """
@@ -42,15 +52,23 @@ def main():
     """
     Main function to execute Task 2.
     """
+    # Initialize Spark session
     spark = initialize_spark()
 
-    input_file = "/workspaces/MovieRatingsAnalysis/input/movie_ratings_data.csv"
-    output_file = "/workspaces/MovieRatingsAnalysis/outputs/churn_risk_users.csv"
+    # Define file paths for input and output
+    input_file = "/workspaces/handson-7-spark-structured-api-movie-ratings-analysis-tarunlagadapati25/input/movie_ratings_data.csv"
+    output_file = "/workspaces/handson-7-spark-structured-api-movie-ratings-analysis-tarunlagadapati25/Outputs/churn_risk_users.csv"
 
+    # Load data into DataFrame
     df = load_data(spark, input_file)
-    result_df = identify_churn_risk_users(df)  # Call function here
+    
+    # Identify churn risk users and total users
+    result_df = identify_churn_risk_users(spark, df)  # Pass spark session to function
+    
+    # Write the result to an output CSV file
     write_output(result_df, output_file)
 
+    # Stop the Spark session
     spark.stop()
 
 if __name__ == "__main__":

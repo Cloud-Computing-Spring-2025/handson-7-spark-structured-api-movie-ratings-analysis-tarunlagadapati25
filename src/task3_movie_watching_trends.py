@@ -25,12 +25,14 @@ def load_data(spark, file_path):
 def analyze_movie_watching_trends(df):
     """
     Analyze trends in movie watching over the years.
-
-    TODO: Implement the following steps:
-    1. Group by `WatchedYear` and count the number of movies watched.
-    2. Order the results by `WatchedYear` to identify trends.
     """
-    pass  # Remove this line after implementation
+    # Group by WatchedYear and count the number of movies watched
+    trend_df = df.groupBy("WatchedYear").agg(count("MovieID").alias("MoviesWatched"))
+    
+    # Order the results by WatchedYear to identify trends over time
+    trend_df = trend_df.orderBy("WatchedYear")
+    
+    return trend_df
 
 def write_output(result_df, output_path):
     """
@@ -42,15 +44,23 @@ def main():
     """
     Main function to execute Task 3.
     """
+    # Initialize Spark session
     spark = initialize_spark()
 
-    input_file = "/workspaces/MovieRatingsAnalysis/input/movie_ratings_data.csv"
-    output_file = "/workspaces/MovieRatingsAnalysis/outputs/movie_watching_trends.csv"
+    # Define file paths for input and output
+    input_file = "/workspaces/handson-7-spark-structured-api-movie-ratings-analysis-tarunlagadapati25/input/movie_ratings_data.csv"
+    output_file = "/workspaces/handson-7-spark-structured-api-movie-ratings-analysis-tarunlagadapati25/Outputs/movie_watching_trends.csv"
 
+    # Load data into DataFrame
     df = load_data(spark, input_file)
-    result_df = analyze_movie_watching_trends(df)  # Call function here
+    
+    # Analyze movie watching trends
+    result_df = analyze_movie_watching_trends(df)  # Call the implemented function
+    
+    # Write the result to an output CSV file
     write_output(result_df, output_file)
 
+    # Stop the Spark session
     spark.stop()
 
 if __name__ == "__main__":
